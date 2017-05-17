@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<title>Login</title>
+	<meta charset="utf-8">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="title" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="robots" content="index, follow">
+	<!-- Bootstrap css -->
+	<link rel="stylesheet" href="../css/bootstrap.css">
+	<!-- Bootstrap theme -->
+	<link rel="stylesheet" href="../css/bootstrap-theme.css">
+	<!-- fontawesome css -->
+	<link rel="stylesheet" href="../css/font-awesome.min.css">
+	<!-- customized css -->
+	<link rel="stylesheet" href="../css/tech.css">
+	<style type="text/css">
+	</style>
+</head>
+
+<body id="login">
+<!--header  begin-->
+<nav id="back-header" class="navbar" role="navigation">
+	<div class="container">
+		<div class="row">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+				        data-target="#bs-example-navbar-collapse-1"></button>
+				<a class="navbar-brand" href="#"> </a>
+			</div>
+			<div class="col-auto header-title hidden-xs">前沿技术</div>
+			<div class="col-auto help-return">
+				<a>返回首页</a>
+			</div>
+		</div>
+	</div>
+</nav>
+<!--header  end-->
+<!--登录面板  begin-->
+<div id="" class="banner-bg" style="background-image:url(../img/login-bg.jpg);">
+	<div class="container">
+		<div class="banner-page v-outter-table">
+			<div class="row v-table-cell">
+				<div class="col-sm-6 col-md-7 col-lg-8" id="login-img">
+					<img src="../img/login-bg-text.png" alt="" class="img-responsive">
+				</div>
+				<!--登录面板  begin-->
+				<div class=" col-sm-6 col-md-5 col-lg-4" id="login-panel">
+					<div class="panel panel-default">
+						<p class="login-title"><strong>账号登录</strong></p>
+						<div class="panel-body login-body">		
+							<!--登录提示-->
+							<div id="login-tip">
+								<!-- <div class="row">
+									<div class="col-sm-1">
+										<i class="fa fa-exclamation-circle"></i>
+									</div>
+									<div class="col-sm-11">您输入的账号与密码不匹配,是否<a herf="javascript: void(0);">忘记密码</a>?</div>
+								</div> -->
+							</div>
+							<!--登陆表单-->
+							<form>
+								<!--账号-->
+								<div class="form-group">
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-user-o fa-fw i-input"></i>
+										</div>
+										<input class="form-control del-border-left" type="text" placeholder="账号" name="account">
+									</div>
+								</div>
+								<!--密码-->
+								<div class="form-group">
+									<div class="input-group">
+										<div class="input-group-addon ">
+											<i class="fa fa-lock fa-fw i-font"></i>
+										</div>
+										<input class="form-control del-border-left" type="password" placeholder="密码" name="password">
+									</div>
+								</div>
+								<!--验证码-->
+								<div class="form-group">
+									<div class="input-group">
+										<input class="form-control" type="text" placeholder="输入验证码" name="imgCode">
+										<div class="input-group-addon">
+											<img alt="验证码" class="img-verification" name="imgCode"
+											     onclick="loadImgCode($(this))">
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<button class="btn btn-zxzx btn-block" type="submit" role="button">
+										登录
+									</button>
+								</div>
+							</form>
+							<div class="login-box-footer text-right">
+								<a href="/account/register" class="title">忘记密码</a>&nbsp;|&nbsp;<a href="/account/forget" class="title">免费注册</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--登录面板  end-->
+			</div>
+		</div>
+	</div>
+</div>
+<!--登录面板  end-->
+<!-- jQuery -->
+<script src="../js/jquery-1.11.3.js"></script>
+<!-- Bootstrap JavaScript -->
+<script src="../js/bootstrap.js"></script>
+<!-- custom js
+<script src="js/请输入.js"></script>-->
+<script type="text/javascript">
+	PATH='/blade';
+	function loadImgCode(imgcode) {
+		imgcode.attr('src', PATH+'/captcha?v=' + Math.random() + '');
+	}//验证码加载
+	function initHeight() {
+		$('.banner-page').height($(window).innerHeight() - $('#back-header').innerHeight()-21);
+		$('#login-img img').height($('#login-panel').height());
+	}//背景及图片高度初始化
+	$('form').submit(function (e) {
+		$.ajax({
+			url: PATH+'/account/login',
+			type: 'POST',
+			data: $(this).serialize(),
+			dataType: 'json',
+			mimeType: 'multipart/form-data',
+			contentType: "application/x-www-form-urlencoded",
+			cache: false,
+			processData: false,
+			success: function (data) {
+				if (data.code !== 0) {
+					var str = '<div class="row">' +
+							'									<div class="col-sm-1">' +
+							'										<i class="fa fa-exclamation-circle"></i>' +
+							'									</div>' +
+							'									<div class="col-sm-11">' + data.message + '</div>' +
+							'								</div>';
+					$('#login-tip').addClass('login-tips').html(str);
+					loadImgCode($('img[name=imgCode]'));
+				} else {
+					location.href =PATH+ '/home/';
+				}
+			}
+		})
+		e.preventDefault();
+	});
+	$(document).ready(function () {
+		initHeight();
+		loadImgCode($('img[name=imgCode]'));
+	});
+	$(window).resize(function () {
+		initHeight();
+	});
+</script>
+</body>
+
+</html>

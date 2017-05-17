@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="title" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="robots" content="index, follow">
+	<!-- Bootstrap css -->
+	<link rel="stylesheet" href="../css/bootstrap.min.css">
+	<!-- Bootstrap theme -->
+	<link rel="stylesheet" href="../css/bootstrap-theme.min.css">
+	<!-- fontawesome css -->
+	<link rel="stylesheet" href="../css/font-awesome.min.css">
+	<!-- customized css -->
+	<link rel="stylesheet" href="../css/jrValidator.css">
+	<link rel="stylesheet" href="../css/tech.css">
+	<style type="text/css">
+	</style>
+</head>
+
+<body>
+<!--header  begin-->
+<nav id="back-header" class="navbar" role="navigation">
+	<div class="container">
+		<div class="row">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+				        data-target="#bs-example-navbar-collapse-1"></button>
+				<a class="navbar-brand" href="http://d.zxzx119.com"> </a>
+			</div>
+			<div class="col-auto header-title hidden-xs">忘记密码</div>
+			<div class="col-auto help-return">
+				<a href="http://d.zxzx119.com">返回首页</a>
+			</div>
+		</div>
+	</div>
+</nav>
+<!--header  end-->
+<div class="container">
+	<div class="panel panel-basis">
+		<div class="panel-body">
+			<!--找回密码  begin-->
+			<form class="form-horizontal" method="post" id="form-forget">
+				<div class="form-tab">账号资料</div>
+				<div class="form-style">
+					<!--账号-->
+					<div class="form-group" id="account">
+						<label class="control-label col-sm-3 ">用户名:</label>
+						<div class="col-sm-4 col-md-5">
+							<input class="form-control" type="text" name="account" required
+							       data-validation-message="用户名不能为空">
+						</div>
+					</div>
+					<!--手机-->
+					<div class="form-group" id="phone">
+						<label class="control-label col-sm-3 ">安全手机:</label>
+						<div class="col-sm-4 col-md-5">
+							<input class="form-control" type="text" name="phone" required
+							       data-validation-message="请输入正确的11位手机号" data-custom-regex="^1[34578]\d{9}$">
+						</div>
+					</div>
+					<!--新密码-->
+					<div class="form-group">
+						<label class="control-label col-sm-3 ">新密码:</label>
+						<div class="col-sm-4 col-md-5">
+							<input id="password" class="form-control" type="password" name="pwd1" required
+							       data-validation-message="密码最少8个字符，包括至少1个大写字母，1个小写字母和1个数字" data-password-pattern="3">
+						</div>
+						<div class="col-sm-5 col-md-4 tips">最少8个字符，需包含大小写字母及数字</div>
+					</div>
+					<!--手机验证码-->
+					<div class="form-group">
+						<label class="control-label col-sm-3 ">手机验证码:</label>
+						<div class="col-sm-4 col-md-5">
+							<div class="input-group">
+								<input class="form-control" type="text" name="code" required
+								       data-validation-message="验证码不能为空">
+								<div class="input-group-btn">
+									<a class="btn btn-default" id="send-sms">免费获取验证码</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--提交  begin-->
+				<div class="row">
+					<div class="col-sm-4 col-md-5  col-sm-offset-3">
+						<a class="btn  btn-zxzx btn-block" type="submit" id="submit">点击重置密码</a>
+					</div>
+				</div>
+				<!--提交  end-->
+			</form>
+			<!--找回密码  end-->
+		</div>
+	</div>
+</div>
+</div>
+<!-- jQuery -->
+<script src="../js/jquery-1.11.3.js"></script>
+<!-- Bootstrap JavaScript -->
+<script src="../js/bootstrap.js"></script>
+<!-- custom js
+<script src="js/请输入.js"></script>-->
+<script src="../js/jrValidator.js"></script>
+<script type="text/javascript">
+	PATH = '/blade';
+	var countdown = 90;
+	function settime() {
+		var obj = $('#send-sms');
+		if (countdown == 0) {
+			obj.removeAttr("disabled");
+			obj.text("免费获取验证码");
+			countdown = 90;
+			return;
+		} else {
+			obj.attr("disabled", true);
+			obj.text("重新发送(" + countdown + ")")
+			countdown--;
+		}
+		setTimeout(function () {
+					settime()
+				}
+				, 1000)
+	}//重新发送计时
+	$('#send-sms').on('click', function () {
+		var account=$('input[name=account]').val();
+		var phone=$('input[name=phone]').val();
+		if(jrValidateForm('account')&&jrValidateForm('phone')){
+			$.ajax({
+				url: PATH + '/account/sendsms?account='+account+'&phone='+phone,
+				type: 'POST',
+				dataType: 'json',
+				mimeType: 'multipart/form-data',
+				contentType: "application/x-www-form-urlencoded",
+				cache: false,
+				processData: false,
+				success: function (data) {
+					var data={'code':'0'}
+					if (data.code===0){
+						settime();
+					}
+					alert(data.message);
+				}
+			})
+		}
+	})//发送手机验证码
+
+	$('form [type=submit]').click(function (e) {
+		if (jrValidateForm('form-forget')) {
+			$.ajax({
+				url: PATH + '/account/reset',
+				type: 'POST',
+				data: $('form').serialize(),
+				dataType: 'json',
+				mimeType: 'multipart/form-data',
+				contentType: "application/x-www-form-urlencoded",
+				cache: false,
+				processData: false,
+				success: function (data) {
+					if (data.code === 0) {
+						alert(data.message);
+						location.href = PATH + '/account/login'
+					} else {
+						alert(data.message);
+					}
+				}
+			})
+		} else {
+			//处理未通过表单验证的代码
+		}
+		e.preventDefault();
+	})
+
+</script>
+</body>
+
+</html>
