@@ -3,12 +3,9 @@
   margin: 0; }
 
 html, body {
-  background-color: #fff;
+  background-color: #eee;
   color: #333;
   font-family: 'STHeiti', Arial; }
-
-li {
-  list-style: none; }
 
 p {
   font-size: 1em;
@@ -385,6 +382,25 @@ ul.pagination {
   margin-left: -15px;
   margin-right: -15px; }
 
+/*input icon to front*/
+.has-feedfront {
+  position: relative; }
+  .has-feedfront .form-control-feedfront {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: auto;
+    z-index: 2;
+    display: block;
+    width: 34px;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+    pointer-events: none;
+    color: #ccc; }
+    .has-feedfront .form-control-feedfront + input {
+      padding-left: 34px; }
+
 /*login*/
 #login .banner-bg {
   margin-top: -20px; }
@@ -410,11 +426,8 @@ ul.pagination {
       color: #c41335; }
       #login .login-body .login-tips a:hover {
         color: #FD0000; }
-  #login .login-body .input-group .del-border-left {
-    border-left: 0 none; }
   #login .login-body .input-group .input-group-addon {
-    background-color: #fff;
-    padding: 6px; }
+    background-color: #fff; }
     #login .login-body .input-group .input-group-addon > i {
       font-size: 1.4em;
       color: #9c9c9c; }
@@ -661,58 +674,82 @@ ul.pagination {
 #register .change-padding-top {
   padding-top: 100px; }
 
-.big-img {
-  position: relative;
-  width: 100%;
-  height: 452px;
-  background: url("../img/front-tech-bigimg.jpg");
-  background-position: center top; }
-  .big-img .btn-upload {
-    position: absolute;
-    left: 50%;
-    bottom: 66px;
-    margin-left: 66px;
-    background-color: #143ec7;
-    width: 120px;
-    height: 40px;
-    color: #fff;
-    text-align: center;
-    line-height: 40px; }
-
-.ask-box p {
-  width: 590px;
-  line-height: 48px;
-  margin: 0 auto;
-  padding: 60px 94px 10px;
-  color: #484848;
-  font-size: 20px;
-  text-align: center;
-  border-bottom: 2px solid #cacaca; }
-
-.tech-arrow {
-  display: block;
-  margin: 26px auto 53px;
-  width: 23px;
-  height: 23px;
-  background: url("../img/front-tech-arrow.jpg"); }
-
-.problem-list {
-  padding-bottom: 86px; }
-  .problem-list li {
+#tech-index {
+  background-color: #fff; }
+  #tech-index .big-img {
     position: relative;
-    text-align: center; }
-    .problem-list li span {
-      display: block;
-      line-height: 52px;
-      font-size: 16px;
-      color: #000;
-      margin-bottom: 22px; }
-    .problem-list li .btn-reg {
+    width: 100%;
+    height: 452px;
+    background: url("../img/front-tech-bigimg.jpg");
+    background-position: center top; }
+    #tech-index .big-img .btn-upload {
       position: absolute;
       left: 50%;
-      top: 96px;
+      bottom: 66px;
+      margin-left: 66px;
+      background-color: #143ec7;
       width: 120px;
       height: 40px;
-      margin-left: -60px; }
+      color: #fff;
+      text-align: center;
+      line-height: 40px; }
+  #tech-index .ask-box p {
+    width: 590px;
+    line-height: 48px;
+    margin: 0 auto;
+    padding: 60px 94px 10px;
+    color: #484848;
+    font-size: 20px;
+    text-align: center;
+    border-bottom: 2px solid #cacaca; }
+  #tech-index .tech-arrow {
+    display: block;
+    margin: 26px auto 53px;
+    width: 23px;
+    height: 23px;
+    background: url("../img/front-tech-arrow.jpg"); }
+  #tech-index .problem-list {
+    padding-bottom: 86px; }
+    #tech-index .problem-list li {
+      list-style: none;
+      position: relative;
+      text-align: center; }
+      #tech-index .problem-list li span {
+        display: block;
+        line-height: 52px;
+        font-size: 16px;
+        color: #000;
+        margin-bottom: 22px; }
+      #tech-index .problem-list li .btn-reg {
+        position: absolute;
+        left: 50%;
+        top: 96px;
+        width: 120px;
+        height: 40px;
+        margin-left: -60px; }
+
+#project-add .form-group .money-unit {
+  height: 34px;
+  line-height: 34px; }
+#project-add .form-group .col-auto {
+  width: 85px;
+  text-align: left; }
+
+#project-manage .fixed-width {
+  width: 120px; }
+
+#index-footer {
+  height: 300px;
+  background-color: #c41335;
+  font-size: 18px;
+  color: #fff;
+  padding-top: 75px;
+  line-height: 40px; }
+  #index-footer .contact-way {
+    padding: 0 10%; }
+    #index-footer .contact-way > div:first-child {
+      border-right: 1px solid #fff; }
+    #index-footer .contact-way i {
+      margin-right: 20px; }
 
 /*# sourceMappingURL=tech.css.map */
