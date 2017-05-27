@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<title>我的发布</title>
+	<meta charset="utf-8">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="title" content="">
+	<!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="robots" content="index, follow">
+	<!-- Bootstrap css -->
+	<link rel="stylesheet" href="../css/bootstrap.min.css">
+	<!-- Bootstrap theme -->
+	<link rel="stylesheet" href="../css/bootstrap-theme.min.css">
+	<!-- fontawesome css -->
+	<link rel="stylesheet" href="../css/font-awesome.min.css">
+	<!-- customized css -->
+	<link rel="stylesheet" href="../css/tech.css">
+	<style type="text/css">
+
+	</style>
+</head>
+
+<body id="project-manage">
+<nav id="back-header" class="navbar" role="navigation">
+	<div class="container">
+		<div class="row">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="${ctxPath}/ent/"> </a>
+			</div>
+			<div class="col-auto header-title hidden-xs">前沿技术</div>
+			<ul class="header-navigation list-inline col-auto">
+				<li><a href="${ctxPath}/project/manager">我的发布</a></li>
+				<li><a href="${ctxPath}/logout"><i class="fa fa-sign-out"></i></a></li>
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container" id="vue">
+	<div class="panel-basis back">
+		<div class="row">
+			<div id="menu">
+				<menudemo></menudemo>
+			</div>
+			<div class="col-sm-9 col-md-10" id="content">
+				<!--查询  begin-->
+				<div class="search">
+					<div class="row">
+						<div class="col-sm-9">
+							<!-- <form id="search" class="form-inline">
+								<div class="row">
+									<div class="col-sm-6">
+										<label class="control-label hidden-sm">项目类型:</label>
+										<select class="form-control" v-model="search.case_type">
+											<option value="">所有类型</option>
+											<option :value="item" v-for="item in casetypelist">{{item}}</option>
+										</select>
+									</div>
+									<div class="col-sm-6">
+										<div class="input-group">
+											<input class="form-control" v-model="search.case_name"
+											       placeholder="请输入关键词...">
+											<div class="input-group-btn">
+												<button class="btn btn-zxzx" v-on:click.prevent="searched()">
+													<i class="fa fa-search fa-lg"></i>
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form> -->
+						</div>
+						<div class="col-sm-3">
+							<a target="_blank" href="/blade/project/add"
+							   class="btn btn-zxzx pull-right">新增项目</a>
+						</div>
+					</div>
+				</div>
+				<!--查询 end-->
+				<temlpate v-if="project_list.total!='0'">
+					<table class="info-table">
+						<tr>
+							<th colspan="2">项目名称</th>
+							<th>项目类型</th>
+							<th>项目类别</th>
+							<th>进度</th>
+						</tr>
+						<template v-for="item in project_list.rows">
+							<tr>
+								<td>
+									<img :src="path+'/uploadify/renderThumb/'+item.project_pic" class="img-responsive center-block fixed-width"></td>
+								<td>
+									{{ellipsis(item.project_name)}}
+								</td>
+								<td>{{item.project_type}}</td>
+								<td>{{item.project_style}}</td>
+								<td>{{item.status}}</td>
+							</tr>
+							<tr>
+								<td colspan="6" class="noborder"></td>
+							</tr>
+						</template>
+					</table>
+				</temlpate>
+				<template v-else>
+					<div class="well">
+						<div class="text-center">
+							您还没有发布消防案例，<a class="from-hot" href="/blade/projects/add">点击进入发布。</a>
+						</div>
+					</div>
+				</template>
+				<ul id="pagination"></ul>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<!-- jQuery -->
+<script src="../js/jquery-1.11.3.js"></script>
+<!-- Bootstrap JavaScript -->
+<script src="../js/bootstrap.js"></script>
+<script src="../js/bootstrap-paginator.js"></script>
+<!-- vue JavaScript -->
+<script src="../js/vue.js"></script>
+<!-- custom js
+<script src="js/请输入.js"></script>-->
+<script type="text/javascript">
+	var vue = new Vue({
+		el: '#vue',
+		data: {
+			path: '/blade',
+			url: '/project/view',
+			project_list: '',
+			result:{
+				page_num:'',
+				page_size:5
+			}
+		},
+		mounted: function () {		
+			this.load(this.result);
+		},
+		methods: {
+			load: function (pageinfo) {
+				$.ajax({
+					type: 'POST',
+					url: this.path + this.url + '?page=' + pageinfo.page_num + '&pagesize=' +pageinfo.page_size,
+					dataType: 'json',
+					traditional: true,
+					success: function (data) {
+						vue.project_list = data.data;
+					}
+				})
+			},
+			paginator: function () {
+				$('#pagination').bootstrapPaginator({
+					currentPage: vue.project_list.page,
+					totalPages: vue.project_list.total,
+					numberOfPages: 5,
+					alignment: 'center',
+					onPageClicked: function (event, originalEvent, type, page) { //异步换页
+						vue.result.page_num = page;
+						vue.load(vue.result);
+					}
+				});
+			},
+			ellipsis: function (text) {
+				if (text.length > 11) {
+					return text.substring(0, 7) + "..." + text.substring(text.length - 4, text.length);
+				}
+				else {
+					return text;
+				}
+			}
+		},
+		watch: {
+			project_list: function () {
+				if (this.project_list.total > 0) {
+					$('#pagination').show();
+					this.paginator();
+				}
+				else {
+					$('#pagination').hide();
+				}
+			}
+		}
+	});
+</script>
+<script src="../js/menu.js"></script>
+</body>
+
+</html>

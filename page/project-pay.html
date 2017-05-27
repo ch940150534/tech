@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<meta name="title" content="">
+		<!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="robots" content="index, follow">
+		<!-- Bootstrap css -->
+		<link rel="stylesheet" href="../css/bootstrap.min.css">
+		<!-- Bootstrap theme -->
+		<link rel="stylesheet" href="../css/bootstrap-theme.min.css">
+		<!-- fontawesome css -->
+		<link rel="stylesheet" href="../css/font-awesome.min.css">
+
+		<link rel="stylesheet" href="../css/tech.css">
+		<style>
+			.order-name{
+				font-size: 18px;
+				font-weight: bold;
+
+			}
+			.order-details{
+				padding: 10px;
+				border-bottom: 2px solid #ccc;
+				background-color: rgba(0,255,0,.1);
+			}
+		</style>
+    </head>
+    <body id="project-pay">
+		<nav id="back-header" class="navbar" role="navigation">
+			<div class="container">
+				<div class="row">
+					<div class="navbar-header">
+						<a class="navbar-brand" href="${ctxPath}/ent/"> </a>
+					</div>
+					<div class="col-auto header-title hidden-xs">前沿技术</div>
+					<ul class="header-navigation list-inline col-auto">
+						<li><a href="${ctxPath}/case/manager">我的发布</a></li>
+						<li><a href="${ctxPath}/logout"><i class="fa fa-sign-out"></i></a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<div class="container">
+			<div class="row order-details">
+				<img src="" alt="" class="col-sm-1">
+				<div class="col-sm-8">
+					<div class="order-name">项目名称</div>
+					<div class="order-number">
+						<span>订单号：</span>
+					</div>
+					<div class="row">
+						<span class="col-sm-3">联系人：</span>
+						<span class="col-sm-3">联系方式：</span>
+						<span class="col-sm-3">时间：</span>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="">应付<span>136</span>元</div>
+				</div>
+			</div>
+			<ul id="myTab" class="nav nav-tabs">
+				<li class="active">
+					<a href="#unionpay" data-toggle="tab">
+						 银联
+					</a>
+				</li>
+				<li><a href="#alipay" data-toggle="tab">支付宝</a></li>
+				<li><a href="#wechatpay" data-toggle="tab">支付宝</a></li>
+			</ul>
+			<div id="myTabContent" class="tab-content">
+				<div class="tab-pane fade in active" id="unionpay">
+					<p>unionpay</p>
+				</div>
+				<div class="tab-pane fade" id="alipay">
+					<p>alipay</p>
+				</div>
+				<div class="tab-pane fade" id="wechatpay">
+					<p>wechatpay</p>
+				</div>
+			</div>
+		</div>
+		<script src="../js/jquery-1.11.3.js"></script>
+		<!-- Bootstrap JavaScript -->
+		<script src="../js/bootstrap.js"></script>
+		<script src="../js/bootstrap-paginator.js"></script>
+		<script src="../js/jrValidator.js"></script>
+		<script src="../js/fileinput.js"></script>
+		<script src="../js/zh.js"></script>
+		<!-- vue JavaScript -->
+		<script src="../js/vue.js"></script>
+		<script>
+
+		</script>
+    </body>
+</html>
