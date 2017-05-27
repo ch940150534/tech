@@ -333,6 +333,7 @@ a {
 
 #secondary-header.navbar {
   z-index: 0;
+  border-radius: 0;
   margin: {
     top: -$header-margin;
     bottom: 0px;
@@ -1069,6 +1070,9 @@ ul.pagination {
   .fixed-width{
     width: 120px;
   }
+  .add-project-btn{
+    margin-bottom: 10px;
+  }
 }
 
 //footer
@@ -1089,3 +1093,13 @@ ul.pagination {
       }
     }
   }
+
+//pingpp
+#pingpp{
+  .modal-body{
+    padding: 20px 65px;
+  }
+  p{
+    font-size: 16px;
+  }
+}

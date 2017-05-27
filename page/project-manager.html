@@ -75,7 +75,7 @@
 						</div>
 						<div class="col-sm-3">
 							<a target="_blank" href="/blade/project/add"
-							   class="btn btn-zxzx pull-right">新增项目</a>
+							   class="btn btn-zxzx pull-right add-project-btn">新增项目</a>
 						</div>
 					</div>
 				</div>
@@ -136,17 +136,18 @@
 			project_list: '',
 			result:{
 				page_num:'',
-				page_size:5
+				page_size:10
 			}
 		},
 		mounted: function () {		
-			this.load(this.result);
+			this.load();
 		},
 		methods: {
-			load: function (pageinfo) {
+			load: function () {
 				$.ajax({
 					type: 'POST',
-					url: this.path + this.url + '?page=' + pageinfo.page_num + '&pagesize=' +pageinfo.page_size,
+					url: this.path + this.url,
+					data:this.result,
 					dataType: 'json',
 					traditional: true,
 					success: function (data) {
@@ -162,7 +163,7 @@
 					alignment: 'center',
 					onPageClicked: function (event, originalEvent, type, page) { //异步换页
 						vue.result.page_num = page;
-						vue.load(vue.result);
+						vue.load();
 					}
 				});
 			},

@@ -80,6 +80,13 @@
 			</div>
 		</div>
 	</div>
+	<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+	  <div class="modal-dialog modal-lg" role="document">
+	    <div class="modal-content">
+	      ...
+	    </div>
+	  </div>
+	</div>
 </div>
 </div>
 <!-- jQuery -->
@@ -161,6 +168,9 @@ Date.prototype.format = function (format) {
 				}
 			},
 			formatTime:function(time){
+				if(!time){
+					return '-';
+				}
 				return new Date(time * 1000).format('yyyy-MM-dd hh:mm:ss');	
 			}
 		},
