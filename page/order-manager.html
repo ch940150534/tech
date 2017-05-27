@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<title>我的订单</title>
+	<meta charset="utf-8">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="title" content="">
+	<!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="robots" content="index, follow">
+	<!-- Bootstrap css -->
+	<link rel="stylesheet" href="../css/bootstrap.min.css">
+	<!-- Bootstrap theme -->
+	<link rel="stylesheet" href="../css/bootstrap-theme.min.css">
+	<!-- fontawesome css -->
+	<link rel="stylesheet" href="../css/font-awesome.min.css">
+	<!-- customized css -->
+	<link rel="stylesheet" href="../css/tech.css">
+	<style type="text/css">
+
+	</style>
+</head>
+
+<body id="order-manager">
+<nav id="back-header" class="navbar" role="navigation">
+	<div class="container">
+		<div class="row">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="${ctxPath}/ent/"> </a>
+			</div>
+			<div class="col-auto header-title hidden-xs">前沿技术</div>
+			<ul class="header-navigation list-inline col-auto">
+				<li><a href="${ctxPath}/order/manager">我的订单</a></li>
+				<li><a href="${ctxPath}/logout"><i class="fa fa-sign-out"></i></a></li>
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container" id="vue">
+	<div class="panel-basis back">
+		<div class="row">
+			<div id="menu">
+				<menudemo></menudemo>
+			</div>
+			<div class="col-sm-9 col-md-10" id="content">
+				<temlpate v-if="order_list.total!='0'">
+					<table class="info-table">
+						<tr>
+							<th>项目名称</th>
+							<th>订单编号</th>
+							<th>创建时间</th>
+							<th>付款时间</th>
+							<th>状态</th>
+						</tr>
+						<template v-for="item in order_list.rows">
+							<tr>
+								<td>{{ellipsis(item.order_name)}}</td>
+								<td>{{item.order_num}}</td>
+								<td>{{formatTime(item.create_time)}}</td>
+								<td>{{formatTime(item.pay_time)}}</td>
+								<td>{{item.status}}</td>
+							</tr>
+							<tr>
+								<td colspan="6" class="noborder"></td>
+							</tr>
+						</template>
+					</table>
+				</temlpate>
+				<template v-else>
+					<div class="well">
+						<div class="text-center">
+							您还没有任何订单
+						</div>
+					</div>
+				</template>
+				<ul id="pagination"></ul>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<!-- jQuery -->
+<script src="../js/jquery-1.11.3.js"></script>
+<!-- Bootstrap JavaScript -->
+<script src="../js/bootstrap.js"></script>
+<script src="../js/bootstrap-paginator.js"></script>
+<!-- vue JavaScript -->
+<script src="../js/vue.js"></script>
+<!-- custom js
+<script src="js/请输入.js"></script>-->
+<script type="text/javascript">
+	//转换时间函数
+Date.prototype.format = function (format) {
+    var o = {
+        "M+": this.getMonth() + 1,
+        "d+": this.getDate(),
+        "h+": this.getHours(),
+        "m+": this.getMinutes(),
+        "s+": this.getSeconds(),
+        "q+": Math.floor((this.getMonth() + 3) / 3),
+        "S": this.getMilliseconds()
+    };
+    if (/(y+)/.test(format)) {
+        format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    }
+    for (var k in o) {
+        if (new RegExp("(" + k + ")").test(format)) {
+            format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
+        }
+    }
+    return format;
+};
+	var vue = new Vue({
+		el: '#vue',
+		data: {
+			path: '/blade',
+			url: '/zxOrder/view',
+			order_list: '',
+			result:{
+				page_num:'',
+				page_size:5
+			}
+		},
+		mounted: function () {		
+			this.load(this.result);
+			this.formatTime(1495536915000);
+		},
+		methods: {
+			load: function (pageinfo) {
+				$.ajax({
+					type: 'POST',
+					url: this.path + this.url + '?page=' + pageinfo.page_num + '&pagesize=' +pageinfo.page_size,
+					dataType: 'json',
+					traditional: true,
+					success: function (data) {
+						vue.order_list = data.data;
+					}
+				})
+			},
+			paginator: function () {
+				$('#pagination').bootstrapPaginator({
+					currentPage: vue.order_list.page,
+					totalPages: vue.order_list.total,
+					numberOfPages: 5,
+					alignment: 'center',
+					onPageClicked: function (event, originalEvent, type, page) { //异步换页
+						vue.result.page_num = page;
+						vue.load(vue.result);
+					}
+				});
+			},
+			ellipsis: function (text) {
+				if (text.length > 11) {
+					return text.substring(0, 7) + "..." + text.substring(text.length - 4, text.length);
+				}
+				else {
+					return text;
+				}
+			},
+			formatTime:function(time){
+				return new Date(time * 1000).format('yyyy-MM-dd hh:mm:ss');	
+			}
+		},
+		watch: {
+			order_list: function () {
+				if (this.order_list.total > 0) {
+					$('#pagination').show();
+					this.paginator();
+				}
+				else {
+					$('#pagination').hide();
+				}
+			}
+		}
+	});
+</script>
+<script src="../js/menu.js"></script>
+</body>
+
+</html>
