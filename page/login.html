@@ -113,7 +113,7 @@
 	var vue = new Vue({
 		el:'#vue',
 		data:{
-			PATH:'/blade',
+			PATH:'${ctxPath}',
 			imgCodeUrl:'',
 			dataCode:'',
 			dataMessage:'',
@@ -126,7 +126,7 @@
 		mounted:function(){
 			var _this = this;
 			this.initHeight();
-			this.loadImgCode($('img[name=imgCode]'));
+			this.loadImgCode();
 			$(window).resize(function () {
 				_this.initHeight();
 			});
@@ -137,12 +137,12 @@
 				$.ajax({
 					url: _this.PATH+'/account/login',
 					type: 'POST',
-					data: $(_this).serialize(),
+					data: _this.obj,
 					dataType: 'json',
 					mimeType: 'multipart/form-data',
 					contentType: "application/x-www-form-urlencoded",
 					cache: false,
-					processData: false,
+					traditional:true,
 					success: function (data) {
 						if (data.code !== 0) {
 							_this.dataCode=data.code;
@@ -155,16 +155,15 @@
 				})
 				e.preventDefault();
 			},
-			loadImgCode:function(imgcode){//验证码加载
-				imgcode.attr('src',this.PATH+'/captcha?v=' + Math.random() + '');
+			loadImgCode:function(){//验证码加载
+				this.imgCodeUrl = this.PATH+'/captcha?v=' + Math.random() + '';
 			},
 			initHeight:function(){//背景及图片高度初始化
 				$('.banner-page').height($(window).innerHeight() - $('#back-header').innerHeight()-21);
-				$('#login-img img').height($('#login-panel').height());
+				$('#login-img img').parent().css('line-height',$('#login-panel').height()+'px');
 			}
 		}
 	})
-	
 </script>
 </body>
 
