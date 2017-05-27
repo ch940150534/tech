@@ -130,15 +130,15 @@
 			project_list: '',
 			result:{
 				page_num:'',
-				page_size:10
+				page_size:1
 			},
 			orderId:''
 		},
-		mounted: function () {
+		mounted: function () {		
 			this.load();
 		},
 		methods: {
-			load: function (pageinfo) {
+			load: function () {
 				$.ajax({
 					type: 'POST',
 					url: this.path + this.url,

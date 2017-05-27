@@ -228,6 +228,7 @@ a {
 
 #secondary-header.navbar {
   z-index: 0;
+  border-radius: 0;
   margin-top: -20px;
   margin-bottom: 0px;
   background-color: #111;
@@ -733,6 +734,8 @@ ul.pagination {
 
 #project-manager .fixed-width {
   width: 120px; }
+#project-manager .add-project-btn {
+  margin-bottom: 10px; }
 
 #index-footer {
   height: 300px;
@@ -747,5 +750,10 @@ ul.pagination {
       border-right: 1px solid #fff; }
     #index-footer .contact-way i {
       margin-right: 20px; }
+
+#pingpp .modal-body {
+  padding: 20px 65px; }
+#pingpp p {
+  font-size: 16px; }
 
 /*# sourceMappingURL=tech.css.map */

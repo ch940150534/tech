@@ -30,60 +30,61 @@
 </head>
 <body id="register">
 <!--header  begin-->
-<nav id="back-header" class="navbar" role="navigation">
-	<div class="container">
-		<div class="row">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="${ctxPath}/" style="background-image: url(../img/logo_sm1.png);"></a>
-			</div>
-			<div class="col-auto header-title hidden-xs">加入中消</div>
-		</div>
-	</div>
-</nav>
-<div class="container" id="vue">
-	<div class="panel-basis change-padding-top">
-		<!--  -->
-		<!--账号资料  begin-->
-		<form class="form-horizontal" method="post" id="form-company">
-			<div class="form-group">
-                <label class="control-label col-sm-3">公司名称:</label>
-                <div class="col-sm-4">
-                    <input v-model="company_info.ent_name" class="form-control" type="text"  name="ent_name" required="" data-validation-message="请输入公司名称">
+    <nav id="back-header" class="navbar" role="navigation">
+        <div class="container">
+            <div class="row">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="${ctxPath}/" style="background-image: url(../img/logo_sm1.png);"></a>
                 </div>
+                <div class="col-auto header-title hidden-xs">加入中消</div>
             </div>
-            <div class="form-group" required data-validation-message="请选择所属行业">
-                <div class="row">
-                    <label class="control-label col-sm-3">所属行业:</label>
+        </div>
+    </nav>
+    <div class="container" id="vue">
+        <div class="panel-basis change-padding-top">
+            <!--  -->
+            <!--账号资料  begin-->
+            <form class="form-horizontal" method="post" id="form-company">
+                <div class="form-group">
+                    <label class="control-label col-sm-3">公司名称:</label>
                     <div class="col-sm-4">
-                        <select v-model="company_info.ent_type" name="ent_type" id="" class="form-control">
-                            <option v-for="item in industryList" :value="item">{{item}}</option>
-                        </select>
+                        <input v-model="company_info.ent_name" class="form-control" type="text" name="ent_name" required="" data-validation-message="请输入公司名称">
                     </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-sm-3">负责人:</label>
-                <div class="col-sm-4">
-                    <input v-model="company_info.contact_name" class="form-control" type="text" name="contact_name" required="" data-validation-message="请输入负责人">
+                <div class="form-group" required data-validation-message="请选择所属行业">
+                    <label class="control-label col-sm-3">所属行业:</label>
+                    <div class="col-sm-4">
+                        <div>
+                            <select v-model="company_info.ent_type" name="ent_type" id="" class="form-control">
+                                <option v-for="item in industryList" :value="item">{{item}}</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-sm-3">联系电话:</label>
-                <div class="col-sm-4">
-                    <input v-model="company_info.contact_phone" class="form-control" type="text" name="contact_phone" required="" data-validation-message="请输入联系电话" data-custom-regex="^1[34578]\d{9}$">
+                <div class="form-group">
+                    <label class="control-label col-sm-3">负责人:</label>
+                    <div class="col-sm-4">
+                        <input v-model="company_info.contact_name" class="form-control" type="text" name="contact_name" required="" data-validation-message="请输入负责人">
+                    </div>
                 </div>
-            </div>
-			<!--提交  begin-->
-			<div class="row">
-				<div class="col-sm-4 col-md-5  col-sm-offset-3">
-					<button class="btn  btn-zxzx center-block btn-width" type="submit" v-on:click.prevent="submit">提交</button>
-				</div>
-			</div>
-			<!--提交  end-->
-		</form>
-		<!--账号资料  end-->
-	</div>
-</div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3">联系电话:</label>
+                    <div class="col-sm-4">
+                        <input v-model="company_info.contact_phone" class="form-control" type="text" name="contact_phone" required="" data-validation-message="请输入联系电话" data-custom-regex="^1[34578]\d{9}$">
+                    </div>
+                </div>
+                <!--提交  begin-->
+                <div class="row">
+                    <div class="col-sm-4 col-md-5  col-sm-offset-3">
+                        <button class="btn  btn-zxzx center-block btn-width" type="submit" v-on:click.prevent="submit">提交</button>
+                    </div>
+                </div>
+                <!--提交  end-->
+            </form>
+            <!--账号资料  end-->
+        </div>
+        <pingpp-pay :order="orderId"></pingpp-pay>
+    </div>
 <!-- jQuery -->
 <script src="../js/jquery-1.11.3.js"></script>
 <!-- Bootstrap JavaScript -->
@@ -98,40 +99,49 @@
 <script src="../js/fileinput.js"></script>
 <script src="../js/zh.js"></script>
 <script type="text/javascript">
-	var vue = new Vue({
-		el: '#vue',
-		data: {
-			path:"/blade",
-			submitUrl:"/ent/save",
-			industryList: ["器材供应商", "经销商/代理商", "设计院", "消防技术咨询", "消防检测", "施工企业", "物业管理", "展会商务", "培训机构", "消防IT开发和服务", "个体消防从业人员", "其他"],
-			company_info:{
-				ent_name: "",
+    var vue = new Vue({
+        el: '#vue',
+        data: {
+            path: '${ctxPath}',
+            submitUrl: "/ent/save",
+            nextHref:'/zxOrder/manager',
+            industryList: ["器材供应商", "经销商/代理商", "设计院", "消防技术咨询", "消防检测", "施工企业", "物业管理", "展会商务", "培训机构", "消防IT开发和服务", "个体消防从业人员", "其他"],
+            company_info: {
+                ent_name: "",
                 ent_type: "",
                 contact_name: "",
                 contact_phone: ""
-			}
-		},
-		methods: {
-			submit: function () {
-				if (jrValidateForm('form-company')) {
-					$.ajax({
-						url: this.path + this.submitUrl,
-						type: 'POST',
-						data: this.company_info,
-						dataType: 'json',
-						cache: false,
-						traditional: true,
-						success: function (data) {
-							//
-						}
-					})
-				}
-			}
-		},
-		mounted: function () {
+            },
+            orderId: ''
+        },
+        methods: {
+            submit: function() {
+                if (jrValidateForm('form-company')) {
+                    $.ajax({
+                        url: this.path + this.submitUrl,
+                        type: 'POST',
+                        data: this.company_info,
+                        dataType: 'json',
+                        cache: false,
+                        traditional: true,
+                        success: function(data) {
+                            if (data.code == 0) {
+                                vue.orderId = data.data.id;
+                                $('#pingpp').modal('show')
+                                
+                            }
+                            else{
+                            	alert(data.message)
+                            }
+                        }
+                    })
+                }
+            }
+        },
+        mounted: function() {
 
-		}
-	})
+        }
+    })
 </script>
 <script src="../js/menu.js"></script>
 </body>
