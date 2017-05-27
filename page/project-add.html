@@ -1,243 +1,243 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta charset="utf-8">
-		<meta name="description" content="">
-		<meta name="keywords" content="">
-		<meta name="title" content="">
-		<!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="robots" content="index, follow">
-		<!-- Bootstrap css -->
-		<link rel="stylesheet" href="../css/bootstrap.min.css">
-		<!-- Bootstrap theme -->
-		<link rel="stylesheet" href="../css/bootstrap-theme.min.css">
-		<!-- fontawesome css -->
-		<link rel="stylesheet" href="../css/font-awesome.min.css">
-		<!-- customized css -->
-		<link rel="stylesheet" href="../css/tech.css">
-        <link rel="stylesheet" href="../css/jrValidator.css">
-		<link rel="stylesheet" href="../css/fileinput.css">
-		<link rel="stylesheet" href="../css/bootstrap-datetimepicker.min.css">
+<head>
+	<meta charset="utf-8">
+	<meta charset="utf-8">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="title" content="">
+	<!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="robots" content="index, follow">
+	<!-- Bootstrap css -->
+	<link rel="stylesheet" href="../css/bootstrap.min.css">
+	<!-- Bootstrap theme -->
+	<link rel="stylesheet" href="../css/bootstrap-theme.min.css">
+	<!-- fontawesome css -->
+	<link rel="stylesheet" href="../css/font-awesome.min.css">
+	<!-- customized css -->
+	<link rel="stylesheet" href="../css/tech.css">
+	<link rel="stylesheet" href="../css/jrValidator.css">
+	<link rel="stylesheet" href="../css/fileinput.css">
+	<link rel="stylesheet" href="../css/bootstrap-datetimepicker.min.css">
+	<link rel="stylesheet" href="../css/bootstrap-chinese-region.css">
 
-    </head>
-    <body id="project-add">
-    <nav id="back-header" class="navbar" role="navigation">
-		<div class="container">
-			<div class="row">
-				<div class="navbar-header">
-					<a class="navbar-brand" href="${ctxPath}/ent/"> </a>
-				</div>
-				<div class="col-auto header-title hidden-xs">前沿技术</div>
-				<ul class="header-navigation list-inline col-auto">
-					<li><a href="${ctxPath}/case/manager">我的发布</a></li>
-					<li><a href="${ctxPath}/logout"><i class="fa fa-sign-out"></i></a></li>
-				</ul>
+</head>
+<body id="project-add">
+<nav id="back-header" class="navbar" role="navigation">
+	<div class="container">
+		<div class="row">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="${ctxPath}/ent/"> </a>
 			</div>
+			<div class="col-auto header-title hidden-xs">前沿技术</div>
+			<ul class="header-navigation list-inline col-auto">
+				<li><a href="${ctxPath}/case/manager">我的发布</a></li>
+				<li><a href="${ctxPath}/logout"><i class="fa fa-sign-out"></i></a></li>
+			</ul>
 		</div>
-	</nav>
-	<div class="container" id="vue">
-		<div class="panel-basis back">
-			<div class="row">
-				<div id="menu">
-					<menudemo></menudemo>
+	</div>
+</nav>
+<div class="container" id="vue">
+	<div class="panel-basis back">
+		<div class="row">
+			<div class="col-sm-3 col-md-2" id="menu">
+				<ul class="list-unstyled text-center menu">
+					<li><a href="${ctxPath}/project/manager">我的发布</a></li>
+					<li><a href="${ctxPath}/zxOrder/manager">我的订单</a></li>
+					<li><a href="${ctxPath}/message/manager">站内信</a></li>
+					<li>
+						<a href="#memberManagement" data-toggle="collapse">会员管理<i class="fa fa-chevron-up"></i></a>
+						<ul class="list-unstyled submenu collapse in" id="memberManagement">
+							<li><a href="${ctxPath}/account/changePWD">修改密码</a></li>
+						</ul>
+					</li>
+				</ul>
+				<div class="">
+					<img src="../img/tel.png" alt="" class="img-responsive center-block">
 				</div>
-				<div class="col-sm-9 col-md-10" id="content">
-					<div class="bottom-line-gray">新建项目</div>
-					<div class="content-body">
+			</div>
+			<div class="col-sm-9 col-md-10" id="content">
+				<div class="bottom-line-gray">新建项目</div>
+				<div class="content-body">
 					<form action="" class="form-horizontal" method="post" id="form-project">
-					<div class="form-group">
-						<label class="control-label col-auto">项目名称:</label>
-						<div class="col-sm-6">
-							<input class="form-control" type="text" name="project_name" v-model="project_info.project_name" required data-validation-message="请输入项目名称">
+						<div class="form-group">
+							<label class="control-label col-auto">项目名称:</label>
+							<div class="col-sm-6">
+								<input class="form-control" type="text" name="project_name"
+								       v-model="project_info.project_name" required data-validation-message="请输入项目名称">
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-								<label class="control-label col-auto" for="address">所在地区:</label>
-								<div class="col-sm-6">
-									<div class="bs-chinese-region flat dropdown" data-min-level="1"
-									 data-max-level="3" data-def-val="[name=ent_region_id]">
-										<input type="text" class="form-control" id="address" name="project_area" placeholder="选择你的地区" data-toggle="dropdown" readonly=""  data-validation-message="请输入所在地区">
-										<input type="hidden" class="form-control" name="project_area_id" value="">
-										<div class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-											<div>
-												<ul class="nav nav-tabs" role="tablist">
-													<li role="presentation" class="active"><a href="#province" data-next="city" role="tab" data-toggle="tab">省份</a>
-													</li>
-													<li role="presentation"><a href="#city" data-next="district" role="tab" data-toggle="tab">城市</a></li>
-													<li role="presentation"><a href="#district" data-next="street" role="tab" data-toggle="tab">县区</a></li>
-												</ul>
-												<div class="tab-content">
-													<div role="tabpanel" class="tab-pane active" id="province">--</div>
-													<div role="tabpanel" class="tab-pane" id="city">--</div>
-													<div role="tabpanel" class="tab-pane" id="district">--</div>
-												</div>
+						<div class="form-group">
+							<label class="control-label col-auto" for="address">所在地区:</label>
+							<div class="col-sm-6">
+								<div class="bs-chinese-region flat dropdown" data-min-level="1" data-max-level="3"
+								     data-def-val="[name=ent_region_id]">
+									<input type="text" class="form-control" id="address" name="project_area"
+									       placeholder="选择你的地区" data-toggle="dropdown" readonly=""
+									       data-validation-message="请输入所在地区">
+									<input type="hidden" class="form-control" name="project_area_id" value="">
+									<div class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+										<div>
+											<ul class="nav nav-tabs" role="tablist">
+												<li role="presentation" class="active"><a href="#province"
+												                                          data-next="city" role="tab"
+												                                          data-toggle="tab">省份</a>
+												</li>
+												<li role="presentation"><a href="#city" data-next="district" role="tab"
+												                           data-toggle="tab">城市</a></li>
+												<li role="presentation"><a href="#district" data-next="street"
+												                           role="tab" data-toggle="tab">县区</a></li>
+											</ul>
+											<div class="tab-content">
+												<div role="tabpanel" class="tab-pane active" id="province">--</div>
+												<div role="tabpanel" class="tab-pane" id="city">--</div>
+												<div role="tabpanel" class="tab-pane" id="district">--</div>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-					<div class="form-group">
-						<label class="control-label col-auto">详细地址:</label>
-						<div class="col-sm-6">
-							<input class="form-control" type="text" v-model="project_info.project_add" name="project_add" required="" data-validation-message="请输入详细地址">
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-auto">项目类型:</label>
-						<div class="col-sm-10">
-							<div class="row" property="radio" required data-validation-message="请选择项目类型">
-								<div class="col-xs-4 col-md-2 radio" v-for="item in typeList">
-									<label for="">
-										<input type="radio" name="project_type" v-model="project_info.project_type" :value="item">{{item}}
-									</label>
+						<div class="form-group">
+							<label class="control-label col-auto">详细地址:</label>
+							<div class="col-sm-6">
+								<input class="form-control" type="text" v-model="project_info.project_add"
+								       name="project_add" required="" data-validation-message="请输入详细地址">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-auto">项目类型:</label>
+							<div class="col-sm-10">
+								<div class="row" property="radio" required data-validation-message="请选择项目类型">
+									<div class="col-xs-4 col-md-2 radio" v-for="item in typeList">
+										<label for="">
+											<input type="radio" name="project_type" v-model="project_info.project_type"
+											       :value="item">{{item}}
+										</label>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-auto">项目类别:</label>
-						<div class="col-sm-10">
-							<div class="row" property="radio" required data-validation-message="请选择项目类别">
-								<div class="col-xs-4 col-md-2 radio" v-for="item in categoryList">
-									<label for="">
-										<input type="radio" name="project_style" v-model="project_info.project_style" :value="item">{{item}}
-									</label>
+						<div class="form-group">
+							<label class="control-label col-auto">项目类别:</label>
+							<div class="col-sm-10">
+								<div class="row" property="radio" required data-validation-message="请选择项目类别">
+									<div class="col-xs-4 col-md-2 radio" v-for="item in categoryList">
+										<label for="">
+											<input type="radio" name="project_style"
+											       v-model="project_info.project_style" :value="item">{{item}}
+										</label>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-auto">项目预算:</label>
-						<div class="col-sm-2">
-							<input class="form-control" type="text" v-model="project_info.project_budget" name="project_budget" required="" data-validation-message="请输入项目预算">
+						<div class="form-group">
+							<label class="control-label col-auto">项目预算:</label>
+							<div class="col-sm-2">
+								<input class="form-control" type="text" v-model="project_info.project_budget"
+								       name="project_budget" required="" data-validation-message="请输入项目预算">
+							</div>
+							<div class="col-sm-2 text-left money-unit">万元</div>
 						</div>
-						<div class="col-sm-2 text-left money-unit">万元</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-auto">简要说明:</label>
-						<div class="col-sm-10">
-					<textarea name="project_description" class="form-control" v-model="project_info.project_description" required
-					          data-validation-message="请描述一下项目相关信息，如层数、面积、建筑用料、装修材料等信息"></textarea>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-auto control-label">实地照片:</label>
-						<div class="col-sm-10">
-							<input multiple type="file" class="file" name="imgFile" property="pic">
-						</div>
-						<input type="hidden" name="pic">
-						<div class="col-sm-offset-2 col-sm-9 tips">请上传多张实地照片，以便我们更好的了解到现场的情况</div>
-					</div>
-					<div class="form-group">
-						<label class="col-auto control-label">上传文件:</label>
-						<div class="col-sm-10">
-							<input type="file" class="file" name="imgFile" property="rar">
-						</div>
-						<input type="hidden" name="pic">
-						<div class="col-sm-offset-2 col-sm-9 tips">
-							上传的文件请包含：<br />
-							1、消防报价清单（如无该文件，可不上传）<br />2、消防原始图纸（如无该图纸请联系相关物业索取）<br />3、修改后的消防图纸（文件名请注明）<br />文件请打包上传，消防图纸请使用DWG文件
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-auto">公司名称:</label>
-						<div class="col-sm-6">
-							<input class="form-control" type="text" v-model="project_info.ent_name" name="ent_name" required="" data-validation-message="请输入公司名称">
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-sm-6" required data-validation-message="请选择所属行业">
-							<div class="row">
-								<label class="control-label col-auto">所属行业:</label>
-								<div class="col-xs-6 col-md-4">
-									<select v-model="project_info.ent_type" name="ent_type" id="" class="form-control">
-										<option v-for="item in industryList" :value="item">{{item}}</option>
-									</select>
-								</div>
+						<div class="form-group">
+							<label class="control-label col-auto">简要说明:</label>
+							<div class="col-sm-10">
+								<textarea name="project_description" class="form-control"
+								          v-model="project_info.project_description" required
+								          data-validation-message="请描述一下项目相关信息，如层数、面积、建筑用料、装修材料等信息"></textarea>
 							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-auto">负责人:</label>
-						<div class="col-sm-6">
-							<input class="form-control" type="text" v-model="project_info.contact_name" name="contact_name" required="" data-validation-message="请输入负责人">
+						<div class="form-group">
+							<label class="col-auto control-label">实地照片:</label>
+							<div class="col-sm-6">
+								<input multiple type="file" class="file" name="imgFile" property="pic">
+							</div>
+							<input type="hidden" name="pic">
+							<div class="col-sm-offset-2 col-sm-9 tips">请上传多张实地照片，以便我们更好的了解到现场的情况</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-auto">联系电话:</label>
-						<div class="col-sm-6">
-							<input class="form-control" type="text" v-model="project_info.contact_phoneproject-" name="contact_phone" required="" data-validation-message="请输入联系电话" data-custom-regex="^1[34578]\d{9}$">
+						<div class="form-group">
+							<label class="col-auto control-label">上传文件:</label>
+							<div class="col-sm-6">
+								<input type="file" class="file" name="zipFile" property="rar">
+							</div>
+							<input type="hidden" name="pic">
+							<div class="col-sm-offset-2 col-sm-9 tips">
+								上传的文件请包含：
+								<br/> 1、消防报价清单（如无该文件，可不上传）
+								<br/>2、消防原始图纸（如无该图纸请联系相关物业索取）
+								<br/>3、修改后的消防图纸（文件名请注明）
+								<br/>文件请打包上传，消防图纸请使用DWG文件
+							</div>
 						</div>
-					</div>
-					</div>
-					<!--提交  begin-->
-					<div class="row text-center">
-						<button class="btn  btn-zxzx" type="submit" role="button"
-						        v-on:click.prevent="jrValidateForm('form-project')">
-							提交
-						</button>
-					</div>
-					<!--提交  end-->
-					</form>
 				</div>
+				<!--提交  begin-->
+				<div class="row text-center">
+					<button class="btn  btn-zxzx" type="submit" role="button"
+					        v-on:click.prevent="jrValidateForm('form-project')">
+						提交
+					</button>
+				</div>
+				<!--提交  end-->
+				</form>
 			</div>
 		</div>
 	</div>
+</div>
 <!-- jQuery -->
 <script src="../js/jquery-1.11.3.js"></script>
 <!-- Bootstrap JavaScript -->
 <script src="../js/bootstrap.js"></script>
 <script src="../js/bootstrap-paginator.js"></script>
+<script src="../js/bootstrap-chinese-region.js"></script>
 <script src="../js/jrValidator.js"></script>
 <script src="../js/fileinput.js"></script>
 <script src="../js/zh.js"></script>
 <!-- vue JavaScript -->
 <script src="../js/vue.js"></script>
-<script src="../js/menu.js"></script>
 <script>
 	var vue = new Vue({
-		el:'#vue',
-		data:{
-			path:"/blade",
-			formurl:"/project/save",
-			typeList:["住宅","别墅","酒店","商铺","娱乐场所","仓库","写字楼","商业中心","医院","学校","度假村","其他"],
-			categoryList:["新建","扩建","改造","其他"],
-			descriptionText:"",
-			industryList:["器材供应商","经销商/代理商","设计院","消防技术咨询","消防检测","施工企业","物业管理","展会商务","培训机构","消防IT开发和服务","个体消防从业人员","其他"],
-			project_info:{
-				project_name:"",
-				project_area:"",
-				project_area_id:"",
-				project_add:"",
-				project_type:"",
-				project_style:"",
-				project_budget:"",
-				project_pic:"",
-				project_description:"",
-				project_file:"",
-				ent_name:"",
-				ent_type:"",
-				contact_name:"",
-				contact_phone:""
-			}
+		el: '#vue',
+		data: {
+			path: "${ctxPath}",
+			formurl: "/project/save",
+			typeList: ["住宅", "别墅", "酒店", "商铺", "娱乐场所", "仓库", "写字楼", "商业中心", "医院", "学校", "度假村", "其他"],
+			categoryList: ["新建", "扩建", "改造", "其他"],
+			descriptionText: "",
+			industryList: ["器材供应商", "经销商/代理商", "设计院", "消防技术咨询", "消防检测", "施工企业", "物业管理", "展会商务", "培训机构", "消防IT开发和服务", "个体消防从业人员", "其他"],
+			project_info: {
+				project_name: "",
+				project_area: "",
+				project_area_id: "",
+				project_add: "",
+				project_type: "",
+				project_style: "",
+				project_budget: "",
+				project_pic: "",
+				project_description: "",
+				project_file: "",
+			},
+			orderId: ''
 		},
-		mounted: function(){
-
+		mounted: function () {
+			//初始化地区选择器
 			$.getJSON('../js/sql_areas.json', function (json) {
 				for (var i = 0; i < json.length; i++) {
-					var area = {id: json[i].id, name: json[i].cname, level: json[i].level, parentId: json[i].upid};
+					var area = {
+						id: json[i].id,
+						name: json[i].cname,
+						level: json[i].level,
+						parentId: json[i].upid
+					};
 					json[i] = area;
 				}
 				$('.bs-chinese-region').chineseRegion('source', json).on('completed.bs.chinese-region', function (e, areas) {
-					$(this).find('[name=ent_region_id]').val(areas[areas.length - 1].id);
+					$(this).find('[name=project_area_id]').val(areas[areas.length - 1].id);
 				});
-				$('.bs-chinese-region').chineseRegion('render', vue.company_info.ent_region_id);//初始化企业所在地区
 			});
 
-			//初始化图片选择插件
+			//初始化图片上传插件
 			$('input[property=pic]').fileinput({
 				showClose: false,
 				language: 'zh',
@@ -250,62 +250,75 @@
 				allowedFileExtensions: ['png', 'jpg'],
 				previewFileIcon: ""
 			})
-			.on('filelock', function (event, filestack) {
-				fileNum = filestack.length + $('.file-preview-success').length;
-				if (fileNum > 5) {
-					return {
-						message: '最多只能上传5个文件'
-					};
-				}
-			})
-			.on("fileuploaded", function (event, data, previewId) {
-				$('#' + previewId).attr('fileId', data.response.fileId);
-			});
+					.on('filelock', function (event, filestack) {
+						fileNum = filestack.length + $('.file-preview-success').length;
+						if (fileNum > 5) {
+							return {
+								message: '最多只能上传5个文件'
+							};
+						}
+					})
+					.on("fileuploaded", function (event, data, previewId) {
+						$('#' + previewId).attr('fileId', data.response.fileId);
+					});
 
-			//
+			//初始化压缩包上传插件
 			$('input[property=rar]').fileinput({
 				showClose: false,
 				language: 'zh',
 				browseClass: 'btn btn-default',
+				showUpload: false,
 				uploadAsync: true,
 				dropZoneEnabled: false,
-				uploadUrl: this.path + '/uploadify/uploadimg',
+				uploadUrl: this.path + '/uploadify/uploadzip',
 				maxFileCount: 1,
 				resizeImage: false,
 				allowedFileExtensions: ['rar', 'zip'],
-				previewFileIcon: "<i class='fa fa-file-zip-o'></i>"
+				showPreview: false
 			})
-			.on('filelock', function (event, filestack) {
-				fileNum = filestack.length + $('.file-preview-success').length;
-				if (fileNum > 1) {
-					return {
-						message: '最多只能上传1个文件'
-					};
-				}
-			})
-			.on("fileuploaded", function (event, data, previewId) {
-				$('#' + previewId).attr('fileId', data.response.fileId);
-			});
+					.on('change', function () {
+						$(this).fileinput('upload');
+					})
+					.on('fileuploaded', function (event, data) {
+						vue.project_info.project_file = data.response.fileId;
+					})
+					.on('filesuccessremove', function (event) {
+						vue.project_info.project_file = null;
+					});
 
 		},
-		methods:{
+		methods: {
 			submit: function () {
-				if(jrValidateForm('form-project')){
-					this.project_info.project_area = $('input[name=project_area]').val();
-					this.project_info.project_area_id = $('input[name=project_area_id]').val();
+				this.project_info.project_area = $('input[name=project_area]').val();
+				this.project_info.project_area_id = $('input[name=project_area_id]').val();
+				var files_list = new Array();
+				$.each($('.file-preview-success'), function () {
+					files_list.push($(this).attr('fileId'));
+				});
+				if (files_list.length < 1) {
+					alert('请上传文件!');
+				} else {
+					vue.project_info.project_pic = files_list;
+					$.ajax({
+						url: this.path + this.formurl,
+						type: 'POST',
+						data: this.project_info,
+						dataType: 'json',
+						mimeType: 'multipart/form-data',
+						cache: false,
+						traditional: true,
+						success: function (data) {
+							if (data.code == 0) {
+								vue.orderId = data.data.id;
+								$('#pingpp').modal('show')
+							}
+							else {
+								alert(data.message)
+							}
+						}
+					})
 				}
-				$.ajax({
-					url: this.path + this.formurl,
-					type: 'POST',
-					data: this.project_info,
-					dataType: 'json',
-					mimeType: 'multipart/form-data',
-					cache: false,
-					traditional: true,
-					success: function (data) {
-						alert(data.message);
-					}
-				})
+
 			},
 			jrValidateForm: function (id) {
 				if (jrValidateForm(id)) {
@@ -315,5 +328,6 @@
 		}
 	})
 </script>
+<script src="../js/menu.js"></script>
 </body>
 </html>
