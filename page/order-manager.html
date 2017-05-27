@@ -42,52 +42,143 @@
 <div class="container" id="vue">
 	<div class="panel-basis back">
 		<div class="row">
-			<div id="menu">
-				<menudemo></menudemo>
+			<div class="col-sm-3 col-md-2" id="menu">
+				<ul class="list-unstyled text-center menu">
+					<li><a href="${ctxPath}/project/manager">我的发布</a></li>
+					<li><a href="${ctxPath}/zxOrder/manager">我的订单</a></li> 
+					<li><a href="${ctxPath}/message/manager">站内信</a></li>
+					<li>
+						<a href="#memberManagement" data-toggle="collapse">会员管理<i class="fa fa-chevron-up"></i></a>
+						<ul class="list-unstyled submenu collapse in" id="memberManagement">
+							<li><a href="${ctxPath}/account/changePWD">修改密码</a></li>
+						</ul>
+					</li>
+				</ul>
+				<div class="">
+					<img src="../img/tel.png" alt="" class="img-responsive center-block">
+				</div>
 			</div>
 			<div class="col-sm-9 col-md-10" id="content">
-				<temlpate v-if="order_list.total!='0'">
-					<table class="info-table">
-						<tr>
-							<th>项目名称</th>
-							<th>订单编号</th>
-							<th>创建时间</th>
-							<th>付款时间</th>
-							<th>状态</th>
-						</tr>
-						<template v-for="item in order_list.rows">
-							<tr>
-								<td>{{ellipsis(item.order_name)}}</td>
-								<td>{{item.order_num}}</td>
-								<td>{{formatTime(item.create_time)}}</td>
-								<td>{{formatTime(item.pay_time)}}</td>
-								<td>{{item.status}}</td>
-							</tr>
-							<tr>
-								<td colspan="6" class="noborder"></td>
-							</tr>
-						</template>
-					</table>
-				</temlpate>
-				<template v-else>
-					<div class="well">
-						<div class="text-center">
-							您还没有任何订单
-						</div>
-					</div>
-				</template>
-				<ul id="pagination"></ul>
-			</div>
-		</div>
-	</div>
-	<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-	  <div class="modal-dialog modal-lg" role="document">
-	    <div class="modal-content">
-	      ...
-	    </div>
-	  </div>
-	</div>
-</div>
+                    <temlpate v-if="order_list.total!='0'">
+                        <table class="info-table">
+                            <tr>
+                                <th>项目名称</th>
+                                <th>订单编号</th>
+                                <th>创建时间</th>
+                                <th>付款时间</th>
+                                <th>状态</th>
+                            </tr>
+                            <template v-for="item in order_list.rows">
+                                <tr>
+                                    <td>{{ellipsis(item.body)}}</td>
+                                    <td>{{item.id}}</td>
+                                    <td>{{formatTime(item.create_time)}}</td>
+                                    <td>{{formatTime(item.pay_time)}}</td>
+                                    <td v-if="item.pay_state=='未付款'">
+                                        <a class="from-hot" v-on:click="pay(item.id)">重新付款</a>
+                                    </td>
+                                    <td v-else class="text-success">
+                                        <div>已付款</div>
+                                        <div v-if="item.invoice_state=='未申请'">
+                                        	<a v-on:click="showInvoice(item.id,item.body,item.amount)">申请发票</a>
+                                        </div>
+                                        <div v-else>
+                                            <span v-if="!item.tails.express_company" title="未找到物流信息">已申请</span>
+                                        	<span v-else :title="'快递公司：'+item.tails.express_company+'\n快递单号：'+item.tails.express_number">已申请</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6" class="noborder"></td>
+                                </tr>
+                            </template>
+                        </table>
+                    </temlpate>
+                    <template v-else>
+                        <div class="well">
+                            <div class="text-center">
+                                暂未查找到订单，请点击“我的发布”输入项目信息、上传消防图纸后进入付款环节
+                            </div>
+                        </div>
+                    </template>
+                    <ul id="pagination"></ul>
+                </div>
+            </div>
+        </div>
+        <pingpp-pay :order="orderId"></pingpp-pay>
+        <div id="invoice-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+          <div class="modal-dialog modal-lg" role="document">
+            
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" type="button" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h5 class="modal-title">
+                        开票信息及收件地址
+                    </h5>
+                </div>
+                    <div class="modal-body">
+                          <form class="form-horizontal" method="post" id="form-invoice">
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">开票抬头:</label>
+                                <div class="col-sm-6">
+                                    <input v-model="form.invoice_rise" class="form-control" type="text" name="" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">开票金额:</label>
+                                <div class="col-sm-4">
+                                    <input v-model="form.invoice_money" class="form-control" type="text" name="" required readonly>
+                                </div>
+                                <div class="col-sm-5 tips" >开票金额为系统根据您的订单总金额计算</div>
+                                <div class="col-sm-offset-3 col-sm-9 text-muted">
+                                    {{modal_project_name}} 消防图纸审核费：{{modal_project_money}}元
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">收件人姓名:</label>
+                                <div class="col-sm-6">
+                                    <input v-model="form.recipient_name" class="form-control" type="text" name="" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">收件地址:</label>
+                                <div class="col-sm-6">
+                                    <input v-model="form.recipient_add" class="form-control" type="text" name="" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">联系电话:</label>
+                                <div class="col-sm-6">
+                                    <input v-model="form.phone" class="form-control" type="text" name="" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">邮编:</label>
+                                <div class="col-sm-6">
+                                    <input v-model="form.zip_code" class="form-control" type="text" name="" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-3 col-sm-9 text-muted">
+                                    提交后我们会在5个工作日内开具发票，发票以快递形式发送到收件人地址，届时请注意查收，也可在“我的订单“里查看快递信息”
+                                </div>
+                            </div>
+                            <!--提交  begin-->
+                            <div class="row text-center">
+                                <button class="btn btn-zxzx" type="submit" role="button" v-on:click.prevent="submit">
+                                    提交
+                                </button>
+                            </div>
+                            <!--提交  end-->
+                        </form>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>  
 </div>
 <!-- jQuery -->
 <script src="../js/jquery-1.11.3.js"></script>
@@ -100,94 +191,141 @@
 <script src="js/请输入.js"></script>-->
 <script type="text/javascript">
 	//转换时间函数
-Date.prototype.format = function (format) {
-    var o = {
-        "M+": this.getMonth() + 1,
-        "d+": this.getDate(),
-        "h+": this.getHours(),
-        "m+": this.getMinutes(),
-        "s+": this.getSeconds(),
-        "q+": Math.floor((this.getMonth() + 3) / 3),
-        "S": this.getMilliseconds()
-    };
-    if (/(y+)/.test(format)) {
-        format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-    }
-    for (var k in o) {
-        if (new RegExp("(" + k + ")").test(format)) {
-            format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
+    Date.prototype.format = function(format) {
+        var o = {
+            "M+": this.getMonth() + 1,
+            "d+": this.getDate(),
+            "h+": this.getHours(),
+            "m+": this.getMinutes(),
+            "s+": this.getSeconds(),
+            "q+": Math.floor((this.getMonth() + 3) / 3),
+            "S": this.getMilliseconds()
+        };
+        if (/(y+)/.test(format)) {
+            format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
         }
-    }
-    return format;
-};
-	var vue = new Vue({
-		el: '#vue',
-		data: {
-			path: '/blade',
-			url: '/zxOrder/view',
-			order_list: '',
-			result:{
-				page_num:'',
-				page_size:5
-			}
-		},
-		mounted: function () {		
-			this.load(this.result);
-			this.formatTime(1495536915000);
-		},
-		methods: {
-			load: function (pageinfo) {
-				$.ajax({
-					type: 'POST',
-					url: this.path + this.url + '?page=' + pageinfo.page_num + '&pagesize=' +pageinfo.page_size,
-					dataType: 'json',
-					traditional: true,
-					success: function (data) {
-						vue.order_list = data.data;
-					}
-				})
+        for (var k in o) {
+            if (new RegExp("(" + k + ")").test(format)) {
+                format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
+            }
+        }
+        return format;
+    };
+    var vue = new Vue({
+        el: '#vue',
+        data: {
+            path: '${ctxPath}',
+            url: '/zxOrder/view',
+            invoiceUrl:'/invoice/save',
+            order_list: '',
+            result: {
+                page: '',
+                pageSize: 10
+            },
+            orderId: '',
+            modal_project_name:'',
+            modal_project_money:'',
+        	form:{
+        		id:'',
+                invoice_rise:'',
+                invoice_money:'',
+                recipient_name:'',
+                recipient_add:'',
+                zip_code:'',
+                phone:''
+        	}
+        },
+        mounted: function() {
+            this.load();
+        },
+        methods: {
+            load: function() {
+                $.ajax({
+                    type: 'POST',
+                    url: this.path + this.url,
+                    data: this.result,
+                    dataType: 'json',
+                    traditional: true,
+                    success: function(data) {
+                        vue.order_list = data.data;
+                    }
+                })
+            },
+            paginator: function() {
+                $('#pagination').bootstrapPaginator({
+                    currentPage: vue.order_list.page,
+                    totalPages: vue.order_list.total,
+                    numberOfPages: 5,
+                    alignment: 'center',
+                    onPageClicked: function(event, originalEvent, type, page) { //异步换页
+                        vue.result.page_num = page;
+                        vue.load(vue.result);
+                    }
+                });
+            },
+            ellipsis: function(text) {
+                if (text.length > 11) {
+                    return text.substring(0, 7) + "..." + text.substring(text.length - 4, text.length);
+                } else {
+                    return text;
+                }
+            },
+            formatTime: function(time) {
+                if (!time) {
+                    return '-';
+                }
+                return new Date(time * 1000).format('yyyy-MM-dd hh:mm:ss');
+            },
+            pay:function(id){
+				this.orderId=id;
+				$('#pingpp').modal('show');
 			},
-			paginator: function () {
-				$('#pagination').bootstrapPaginator({
-					currentPage: vue.order_list.page,
-					totalPages: vue.order_list.total,
-					numberOfPages: 5,
-					alignment: 'center',
-					onPageClicked: function (event, originalEvent, type, page) { //异步换页
-						vue.result.page_num = page;
-						vue.load(vue.result);
-					}
-				});
-			},
-			ellipsis: function (text) {
-				if (text.length > 11) {
-					return text.substring(0, 7) + "..." + text.substring(text.length - 4, text.length);
-				}
-				else {
-					return text;
-				}
-			},
-			formatTime:function(time){
-				if(!time){
-					return '-';
-				}
-				return new Date(time * 1000).format('yyyy-MM-dd hh:mm:ss');	
-			}
-		},
-		watch: {
-			order_list: function () {
-				if (this.order_list.total > 0) {
-					$('#pagination').show();
-					this.paginator();
-				}
-				else {
-					$('#pagination').hide();
-				}
-			}
-		}
-	});
+            showInvoice:function(id,name,money){
+                for(item in this.form){
+                    item = '';
+                }
+                this.form.id = id;
+                this.form.invoice_money = money;
+                this.modal_project_name = name;
+                this.modal_project_money = money;
+                $('#invoice-modal').modal('show');
+            },
+            submit:function(e){
+                for(item in this.form){
+                    if(!item){
+                        alert('请确认完成上述所有信息的填写！');
+                        return false;
+                    }
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: this.path+this.invoiceUrl,
+                    data: this.form,
+                    dataType: 'json',
+                    traditional: true,
+                    success: function(data) {         
+                        if(data.code==0){
+                            $('#invoice-modal').modal('hide');
+                            vue.load();
+                        }else{
+                            alert(data.message);
+                        }
+                    }
+                })
+            }
+        },
+        watch: {
+            order_list: function() {
+                if (this.order_list.total > 0) {
+                    $('#pagination').show();
+                    this.paginator();
+                } else {
+                    $('#pagination').hide();
+                }
+            }
+        }
+    });
 </script>
-<script src="../js/menu.js"></script>
 </body>
 
 </html>

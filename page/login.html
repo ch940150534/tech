@@ -50,42 +50,48 @@
 				</div>
 				<!--登录面板  begin-->
 				<div class=" col-sm-6 col-md-5 col-lg-4" id="login-panel">
-					<div class="panel panel-default">
+					<div class="panel panel-default" style="margin-bottom: 0px">
 						<p class="login-title"><strong>账号登录</strong></p>
 						<div class="panel-body login-body">		
 							<!--登录提示-->
-							<div id="login-tip">
+							<div id="login-tip" class="login-tips" v-if="dataCode">
+								<div class="row">
+									<div class="col-sm-1">
+										<i class="fa fa-exclamation-circle"></i>
+									</div>
+									<div class="col-sm-11">{{dataMessage}}</div>
+								</div>
 							</div>
 							<!--登陆表单-->
 							<form>
 								<!--账号-->
 								<div class="form-group has-feedfront">
 									<span class="glyphicon glyphicon-user form-control-feedfront"></span>
-									<input class="form-control" type="text" placeholder="账号" name="account" id="account">
+									<input v-model="obj.account" class="form-control" type="text" placeholder="账号" name="account" id="account">
 								</div>
 								<!--密码-->
 								<div class="form-group has-feedfront">
 									<span class="glyphicon glyphicon-lock form-control-feedfront"></span>
-									<input class="form-control" type="password" placeholder="密码" name="password">
+									<input v-model="obj.password" class="form-control" type="password" placeholder="密码" name="password">
 								</div>
 								<!--验证码-->
 								<div class="form-group">
 									<div class="input-group">
-										<input class="form-control" type="text" placeholder="输入验证码" name="imgCode">
+										<input class="form-control" v-model="obj.imgCode" type="text" placeholder="输入验证码" name="imgCode">
 										<div class="input-group-addon">
-											<img alt="验证码" class="img-verification" name="imgCode"
-											     onclick="loadImgCode($(this))">
+											<img alt="验证码"  class="img-verification" name="imgCode" :src="imgCodeUrl"
+											     v-on:click="loadImgCode">
 										</div>
 									</div>
 								</div>
 								<div class="form-group">
-									<button class="btn btn-zxzx btn-block" type="submit" role="button" @click="submit($event)">
+									<button class="btn btn-zxzx btn-block" type="submit" role="button" v-on:click="submit($event)">
 										登录
 									</button>
 								</div>
 							</form>
 							<div class="login-box-footer text-right">
-								<a href="/account/register" class="title">忘记密码</a>&nbsp;|&nbsp;<a href="/account/forget" class="title">免费注册</a>
+								<a href="${ctxPath}/account/forget" class="title">忘记密码</a>&nbsp;|&nbsp;<a href="${ctxPath}/account/register" class="title">免费注册</a>
 							</div>
 						</div>
 					</div>
@@ -107,7 +113,15 @@
 	var vue = new Vue({
 		el:'#vue',
 		data:{
-			PATH:'/blade'
+			PATH:'/blade',
+			imgCodeUrl:'',
+			dataCode:'',
+			dataMessage:'',
+			obj:{
+				account:"",
+				password:"",
+				imgCode:""
+			}
 		},
 		mounted:function(){
 			var _this = this;
@@ -131,14 +145,9 @@
 					processData: false,
 					success: function (data) {
 						if (data.code !== 0) {
-							var str = '<div class="row">' +
-									'									<div class="col-sm-1">' +
-									'										<i class="fa fa-exclamation-circle"></i>' +
-									'									</div>' +
-									'									<div class="col-sm-11">' + data.message + '</div>' +
-									'								</div>';
-							$('#login-tip').addClass('login-tips').html(str);
-							loadImgCode($('img[name=imgCode]'));
+							_this.dataCode=data.code;
+							_this.dataMessage=data.message;
+							_this.loadImgCode();
 						} else {
 							location.href =_this.PATH+ '/home/';
 						}
