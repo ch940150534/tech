@@ -88,15 +88,16 @@
                                     </td>
                                     <td>{{item.project_type}}</td>
                                     <td>{{item.project_style}}</td>
-                                    <td v-if="item.pay_status=='未付款'">
-                                        <a class="from-hot" v-on:click="pay(item.tails.id)">重新付款</a>
-                                    </td>
-                                    <td v-else-if="item.status=='未审批'" class="text-hot">
-                                        审批中
-                                    </td>
-                                    <td v-else>
-                                        <a :href="path+downloadUrl+item.project_id" class="text-success">下载审批意见</a>
-                                        <div>中消报价：{{formatNum(item.project_offer)}}元</div>
+                                    <td>
+                                        <a v-if="item.pay_status=='未付款'" class="from-hot" v-on:click="pay(item.tails.id)">重新付款</a>
+                                        <span v-else-if="item.status=='未审批'" class="text-hot">审批中</span>
+                                        <div v-else>
+                                            <a :href="path+downloadUrl+item.project_id" class="text-success">下载审批意见</a>
+                                            <div v-if="item.project_offer">中消报价：{{formatNum(item.project_offer)}}元</div>
+                                        </div>
+                                        <div v-if="item.report_file">
+                                            <a class='text-success' :href="path+rarDownloadUrl+item.report_file">下载审批文件</a>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
