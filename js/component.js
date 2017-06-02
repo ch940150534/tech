@@ -78,7 +78,10 @@ Vue.component('pingpp-pay', {
         '            <div class="modal-dialog">' +
         '                <div class="modal-content">' +
         '                    <div class="modal-header">' +
-        '                        <button class="close" type="button" data-dismiss="modal" aria-hidden="true">' +
+        '                        <button class="close" type="button" data-dismiss="modal" aria-hidden="true" v-on:click="goto" v-if="order_info.subject!=\'图纸审核\'">' +
+        '                            &times;' +
+        '                        </button>' +
+        '                        <button class="close" type="button" data-dismiss="modal" aria-hidden="true" v-else>' +
         '                            &times;' +
         '                        </button>' +
         '                        <h5 class="modal-title">' +
@@ -86,26 +89,52 @@ Vue.component('pingpp-pay', {
         '                    </h5>' +
         '                    </div>' +
         '                    <div class="modal-body">' +
-        '                    <h1 class="text-center">友情提示</h1>' +
-        '                        <div v-if="order_info.subject==\'图纸审核\'">' +
-        '                        <p>*   图纸审核人工费为<span class="text-hot">1000</span>元/次，审核结果将在3个工作日内完成，届时请在“<span class="text-hot">我的发布</span>”里点击 <span class="text-success">“下载审批意见”</span>获取</p>' +
-        '                        <p>*   未缴纳图纸审核费的企业及个人请前往“<span class="text-hot">我的订单</span>”缴费</p>' +
+        '                    <h1 class="text-center">友情提示</h1>' + 
+        '                       <div v-if="order_info.subject==\'图纸审核\'">' +
+        '                        <div v-if="pay_way!=\'isBank\'">'+
+        '                           <p>*   图纸审核人工费为<span class="text-hot">1000</span>元/次，审核结果将在3个工作日内完成，届时请在“<span class="text-hot">我的发布</span>”里点击 <span class="text-success">“下载审批意见”</span>获取</p>' +
+        '                           <p>*   未缴纳图纸审核费的企业及个人请前往“<span class="text-hot">我的订单</span>”缴费</p>' +
         '                        </div>' +
-        '                        <div v-else>' +
-        '                        <p>*   企业及个人备案费为<span class="text-hot"></span>100元/次，付款成功后请点击“<span class="text-hot">我的发布</span>”提交消防图纸，我们将在3个工作日内完成图纸审核</p>' +
-        '                        <p>*   未备案的企业及个人请前往“<span class="text-hot">我的订单</span>”缴纳备案费后上传消防图纸</p>' +
+        '                        <div v-else>'+
+        '                           <p>图纸审核人工费为<span class="text-hot">1000</span>元/次，使用对公付款方式时，需在交易备注里写明您的账户名称，示例<span class="text-hot">（前沿技术：订单编号）</span>，订单编号请在“<span class="text-hot">我的订单</span>”里查阅。' +
+        '                           <p>由于银行间付款不会实时到账，还请提前安排。我们将在收到款项后为您安排审图事宜，届时请在“<span class="text-hot">我的发布</span>”里点击 <span class="text-success">“下载审批意见”</span>获取</p>' +
+        '                           <p><b>公司名称：</b><span>上海中消网络科技有限公司</span></p>' +
+        '                           <p><b>开户银行：</b><span>交通银行上海第一支行</span></p>' +
+        '                           <p><b>银行账号：</b><span>310066726018800051881</span></p>' +
         '                        </div>' +
+        '                       </div>' +
+        '                       <div v-else>' +
+        '                           <p>*   企业及个人备案费为<span class="text-hot"></span>100元/次，付款成功后请点击“<span class="text-hot">我的发布</span>”提交消防图纸，我们将在3个工作日内完成图纸审核</p>' +
+        '                           <p>*   未备案的企业及个人请前往“<span class="text-hot">我的订单</span>”缴纳备案费后上传消防图纸</p>' +
+        '                        <div v-if="pay_way==\'isBank\'">'+
+        '                           <p><b>公司名称：</b><span>上海中消网络科技有限公司</span></p>' +
+        '                           <p><b>开户银行：</b><span>交通银行上海第一支行</span></p>' +
+        '                           <p><b>银行账号：</b><span>310066726018800051881</span></p>' +
+        '                        </div>' +
+        '                       </div>'+
         '                        <form class="form-horizontal">' +
+        '                            <div class="form-group" v-if="pay_way==\'isBank\'">' +
+        '                                <label class="control-label col-sm-5"><span class="text-hot">*</span>请确认您的订单编号：</label>' + 
+        '                                <div class="input-group col-sm-7">'+
+        '                                   <input id="orderId" type="text" class="form-control" v-model="order_id"/>'+
+        '                                </div>'+                        
+        '                            </div>'+
         '                            <div class="form-group">' +
         '                                <label class="control-label col-sm-4">支付方式：</label>' +
-        '                                <div class="col-sm-8 radio">' +
+        '                                <div class="col-sm-4 radio">' +
         '                                    <label>' +
-        '                                        <input type="radio" v-model="pay_way" value="alipay_pc_direct">支付宝网页支付' +
+        '                                        <input name="payw" type="radio" v-model="pay_way" value="alipay_pc_direct">支付宝网页支付' +
+        '                                    </label>' +
+        '                                </div>' +
+        '                                <div class="col-sm-4 radio">' +
+        '                                    <label>' +
+        '                                        <input name="payw" type="radio" v-model="pay_way" value="isBank">银行汇款' +
         '                                    </label>' +
         '                                </div>' +
         '                            </div>' +
         '                            <div class="form-group">' +
-        '                                <button class="btn btn-zxzx center-block" v-on:click.prevent="pay">去支付</button>' +
+        '                                <button v-if="pay_way!=\'isBank\'" class="btn btn-zxzx center-block" v-on:click.prevent="pay">去支付</button>' +
+        '                                <button v-else class="btn btn-zxzx center-block" v-on:click.prevent="bankFun">汇款成功</button>' +
         '                            </div>' +
         '                        </form>' +
         '                    </div>' +
@@ -117,8 +146,10 @@ Vue.component('pingpp-pay', {
             path: '/tech',
             smsUrl: '/account/sendsms',
             orderUrl: '/zxOrder/getinfo',
+            bankPayUrl: '/zxOrder/update',
             pay_way: '',
             order_info: '',
+            order_id: ''
         }
     },
     methods: {
@@ -147,6 +178,7 @@ Vue.component('pingpp-pay', {
             })
         },
         load: function() {
+            this.order_id = this.order;//
             var self = this;
             $.ajax({
                 type: 'POST',
@@ -157,6 +189,27 @@ Vue.component('pingpp-pay', {
                     self.order_info = data.data;
                 }
             })
+        },
+        goto:function(){
+            window.location.href='../zxOrder/manager';
+        },
+        bankFun:function(){
+            if(this.order_id){
+                $.ajax({
+                    type: 'POST',
+                    url: this.path + this.bankPayUrl + '/' + this.order,
+                    dataType: 'json',
+                    traditional: true,
+                    success: function(data) {
+                       if(data.code!=0){
+                        console.log(data.message);
+                       }
+                       $('#pingpp').modal('hide');
+                    }
+                })
+            }else{
+                alert('请填写您的订单编号！');
+            }
         }
     },
     watch: {

@@ -404,9 +404,6 @@ ul.pagination {
 /*login*/
 #login .banner-bg {
   margin-top: -20px; }
-@media (max-width: 767px) {
-  #login #login-img {
-    display: none; } }
 #login #login-img img {
   display: inline-block; }
 #login .login-title {
@@ -757,5 +754,8 @@ ul.pagination {
   padding: 20px 65px; }
 #pingpp p {
   font-size: 16px; }
+
+[v-cloak] {
+  display: none; }
 
 /*# sourceMappingURL=tech.css.map */

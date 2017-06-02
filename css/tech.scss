@@ -1101,3 +1101,8 @@ ul.pagination {
     font-size: 16px;
   }
 }
+
+//v-cloak
+[v-cloak] {
+  display: none;
+}

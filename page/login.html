@@ -54,12 +54,12 @@
 						<p class="login-title"><strong>账号登录</strong></p>
 						<div class="panel-body login-body">		
 							<!--登录提示-->
-							<div id="login-tip" class="login-tips" v-if="dataCode">
+							<div v-cloak id="login-tip" class="login-tips" v-if="dataMessage">
 								<div class="row">
 									<div class="col-sm-1">
 										<i class="fa fa-exclamation-circle"></i>
 									</div>
-									<div class="col-sm-11">{{dataMessage}}</div>
+									<div v-cloak class="col-sm-11">{{dataMessage}}</div>
 								</div>
 							</div>
 							<!--登陆表单-->

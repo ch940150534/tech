@@ -72,30 +72,39 @@
 				</div>
 				<!--查询 end-->
 				<temlpate v-if="project_list.total!='0'">
-					<table class="info-table">
-						<tr>
-							<th colspan="2">项目名称</th>
-							<th>项目类型</th>
-							<th>项目类别</th>
-							<th>进度</th>
-						</tr>
-						<template v-for="item in project_list.rows">
-							<tr>
-								<td>
-									<img :src="path+'/uploadify/renderThumb/'+item.project_pic" class="img-responsive center-block fixed-width"></td>
-								<td>
-									{{ellipsis(item.project_name)}}
-								</td>
-								<td>{{item.project_type}}</td>
-								<td>{{item.project_style}}</td>
-								<td>{{item.status}}</td>
-							</tr>
-							<tr>
-								<td colspan="6" class="noborder"></td>
-							</tr>
-						</template>
-					</table>
-				</temlpate>
+                        <table class="info-table">
+                            <tr>
+                                <th colspan="2">项目名称</th>
+                                <th>项目类型</th>
+                                <th>项目类别</th>
+                                <th>进度</th>
+                            </tr>
+                            <template v-for="item in project_list.rows">
+                                <tr>
+                                    <td class="fixed-width">
+                                        <img :src="path+'/uploadify/renderThumb/'+item.project_pic+'/120x80'" class="img-responsive center-block"></td>
+                                    <td>
+                                        {{ellipsis(item.project_name)}}
+                                    </td>
+                                    <td>{{item.project_type}}</td>
+                                    <td>{{item.project_style}}</td>
+                                    <td v-if="item.pay_status=='未付款'">
+                                        <a class="from-hot" v-on:click="pay(item.tails.id)">重新付款</a>
+                                    </td>
+                                    <td v-else-if="item.status=='未审批'" class="text-hot">
+                                        审批中
+                                    </td>
+                                    <td v-else>
+                                        <a :href="path+downloadUrl+item.project_id" class="text-success">下载审批意见</a>
+                                        <div>中消报价：{{formatNum(item.project_offer)}}元</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6" class="noborder"></td>
+                                </tr>
+                            </template>
+                        </table>
+                    </temlpate>
 				<template v-else>
 					<div class="well">
 						<div class="text-center">
@@ -173,7 +182,16 @@
 			pay:function(id){
 				this.orderId=id;
 				$('#pingpp').modal('show');
-			}
+			},
+            formatNum: function(num) {//每三位一个逗号
+                var str = parseInt(num).toString();
+                var len = str.length;
+                if (len <= 3) {
+                    return str;
+                }
+                var r = len % 3;
+                return r > 0 ? str.slice(0, r) + "," + str.slice(r, len).match(/\d{3}/g).join(",") : str.slice(r, len).match(/\d{3}/g).join(",");
+            }
 		},
 		watch: {
 			project_list: function () {
