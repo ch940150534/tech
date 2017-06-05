@@ -585,9 +585,9 @@ ul.pagination {
   .banner-bg {
     margin-top: -20px;
   }
-  @media (max-width: 767px) {
-    #login-img {
-      display: none;
+  #login-img{
+    img{
+        display: inline-block;
     }
   }
   .login-title{
@@ -1100,4 +1100,9 @@ ul.pagination {
   p{
     font-size: 16px;
   }
+}
+
+//v-cloak
+[v-cloak] {
+  display: none;
 }

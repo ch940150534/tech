@@ -45,7 +45,7 @@
 	<div class="container">
 		<div class="banner-page v-outter-table">
 			<div class="row v-table-cell">
-				<div class="col-sm-6 col-md-7 col-lg-8" id="login-img">
+				<div class="col-sm-6 col-md-7 col-lg-8 hidden-xs" id="login-img">
 					<img src="../img/login-bg-text.png" alt="" class="img-responsive">
 				</div>
 				<!--登录面板  begin-->
@@ -54,12 +54,12 @@
 						<p class="login-title"><strong>账号登录</strong></p>
 						<div class="panel-body login-body">		
 							<!--登录提示-->
-							<div id="login-tip" class="login-tips" v-if="dataCode">
+							<div v-cloak id="login-tip" class="login-tips" v-if="dataMessage">
 								<div class="row">
 									<div class="col-sm-1">
 										<i class="fa fa-exclamation-circle"></i>
 									</div>
-									<div class="col-sm-11">{{dataMessage}}</div>
+									<div v-cloak class="col-sm-11">{{dataMessage}}</div>
 								</div>
 							</div>
 							<!--登陆表单-->
