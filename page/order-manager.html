@@ -80,7 +80,7 @@
                                     <td v-else class="text-success">
                                         <div>已付款</div>
                                         <div v-if="item.invoice_state=='未申请'">
-                                        	<a v-on:click="showInvoice(item.id,item.body,item.amount)">申请发票</a>
+                                        	<a v-on:click="showInvoice(item.id,item.body,item.amount,item.subject)">申请发票</a>
                                         </div>
                                         <div v-else>
                                             <span v-if="!item.tails.express_company" title="未找到物流信息">已申请</span>
@@ -133,7 +133,7 @@
                                 </div>
                                 <div class="col-sm-5 tips" >开票金额为系统根据您的订单总金额计算</div>
                                 <div class="col-sm-offset-3 col-sm-9 text-muted">
-                                    {{modal_project_name}} 消防图纸审核费：{{modal_project_money}}元
+                                    {{modal_project_name}} {{modal_project_subject}}：{{modal_project_money}}元
                                 </div>
                             </div>
                             <div class="form-group">
@@ -225,6 +225,7 @@
             orderId: '',
             modal_project_name:'',
             modal_project_money:'',
+	        modal_project_subject:'',
         	form:{
         		id:'',
                 invoice_rise:'',
@@ -280,16 +281,17 @@
 				this.orderId=id;
 				$('#pingpp').modal('show');
 			},
-            showInvoice:function(id,name,money){
-                for(item in this.form){
-                    item = '';
-                }
-                this.form.id = id;
-                this.form.invoice_money = money;
-                this.modal_project_name = name;
-                this.modal_project_money = money;
-                $('#invoice-modal').modal('show');
-            },
+	        showInvoice:function(id,name,money,subject){
+		        for(item in this.form){
+			        item = '';
+		        }
+		        this.form.id = id;
+		        this.form.invoice_money = money/100;
+		        this.modal_project_name = name;
+		        this.modal_project_money = money;
+		        this.modal_project_subject = subject;
+		        $('#invoice-modal').modal('show');
+	        },
             submit:function(e){
                 for(item in this.form){
                     if(!item){
