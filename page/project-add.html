@@ -152,7 +152,7 @@
 						<div class="form-group">
 							<label class="col-auto control-label">实地照片:</label>
 							<div class="col-sm-6">
-								<input multiple type="file" class="file" name="imgFile" property="pic">
+								<input multiple type="file" class="file" name="imgFile" property="img">
 							</div>
 							<input type="hidden" name="pic">
 							<div class="col-sm-offset-2 col-sm-9 tips">请上传多张实地照片，以便我们更好的了解到现场的情况</div>
@@ -160,7 +160,7 @@
 						<div class="form-group">
 							<label class="col-auto control-label">上传文件:</label>
 							<div class="col-sm-6">
-								<input type="file" class="file" name="zipFile" property="rar">
+								<input multiple type="file" class="file" name="zipFile" property="zip">
 							</div>
 							<input type="hidden" name="pic">
 							<div class="col-sm-offset-2 col-sm-9 tips">
@@ -168,7 +168,7 @@
 								<br/> 1、消防报价清单（如无该文件，可不上传）
 								<br/>2、消防原始图纸（如无该图纸请联系相关物业索取）
 								<br/>3、修改后的消防图纸（文件名请注明）
-								<br/>文件请打包上传，消防图纸请使用DWG文件
+								<br/>消防图纸请使用DWG文件
 							</div>
 						</div>
 				</div>
@@ -184,6 +184,7 @@
 			</div>
 		</div>
 	</div>
+	<pingpp-pay :order="orderId" :close-href="1"></pingpp-pay>
 </div>
 <!-- jQuery -->
 <script src="../js/jquery-1.11.3.js"></script>
@@ -238,7 +239,7 @@
 			});
 
 			//初始化图片上传插件
-			$('input[property=pic]').fileinput({
+			$('input[property=img]').fileinput({
 				showClose: false,
 				language: 'zh',
 				browseClass: 'btn btn-default',
@@ -250,40 +251,58 @@
 				allowedFileExtensions: ['png', 'jpg'],
 				previewFileIcon: ""
 			})
-					.on('filelock', function (event, filestack) {
-						fileNum = filestack.length + $('.file-preview-success').length;
+					.on('filepreupload', function (event, data) {
+						fileNum = data.filescount + vue.project_info.project_file.length;
 						if (fileNum > 5) {
 							return {
 								message: '最多只能上传5个文件'
 							};
 						}
+
 					})
 					.on("fileuploaded", function (event, data, previewId) {
-						$('#' + previewId).attr('fileId', data.response.fileId);
+						vue.project_info.project_pic.push(data.response.fileId);
+						$('#' + previewId).attr('fileIndex', vue.project_info.project_pic.length - 1);
+					})
+					.on('filesuccessremove', function (event, id) {
+						var index = $('#' + id).attr('fileIndex');
+						vue.project_info.project_pic.splice(index, 1);
+					})
+					.on('fileclear', function (event) {
+						vue.project_info.project_pic.length = 0;
 					});
 
 			//初始化压缩包上传插件
-			$('input[property=rar]').fileinput({
+			$('input[property=zip]').fileinput({
 				showClose: false,
 				language: 'zh',
 				browseClass: 'btn btn-default',
-				showUpload: false,
 				uploadAsync: true,
 				dropZoneEnabled: false,
 				uploadUrl: this.path + '/uploadify/uploadzip',
-				maxFileCount: 1,
+				maxFileCount: 10,
 				resizeImage: false,
-				allowedFileExtensions: ['rar', 'zip'],
-				showPreview: false
+				previewFileIcon: ""
 			})
-					.on('change', function () {
-						$(this).fileinput('upload');
+					.on('filepreupload', function (event, data) {
+						fileNum = data.filescount + vue.project_info.project_file.length;
+						if (fileNum > 10) {
+							return {
+								message: '最多只能上传10个文件'
+							};
+						}
+
 					})
-					.on('fileuploaded', function (event, data) {
-						vue.project_info.project_file = data.response.fileId;
+					.on("fileuploaded", function (event, data, previewId) {
+						vue.project_info.project_file.push(data.response.fileId);
+						$('#' + previewId).attr('fileIndex', vue.project_info.project_file.length - 1);
 					})
-					.on('filesuccessremove', function (event) {
-						vue.project_info.project_file = null;
+					.on('filesuccessremove', function (event, id) {
+						var index = $('#' + id).attr('fileIndex');
+						vue.project_info.project_file.splice(index, 1);
+					})
+					.on('fileclear', function (event) {
+						vue.project_info.project_file.length = 0;
 					});
 
 		},
@@ -291,11 +310,7 @@
 			submit: function () {
 				this.project_info.project_area = $('input[name=project_area]').val();
 				this.project_info.project_area_id = $('input[name=project_area_id]').val();
-				var files_list = new Array();
-				$.each($('.file-preview-success'), function () {
-					files_list.push($(this).attr('fileId'));
-				});
-				if (files_list.length < 1) {
+				if (vue.project_info.project_pic.length < 1||vue.project_info.project_file.length<1) {
 					alert('请上传文件!');
 				} else {
 					vue.project_info.project_pic = files_list;
